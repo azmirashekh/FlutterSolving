@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(SettingsApp());
+}
+
+class SettingsApp extends StatefulWidget {
+  @override
+  _SettingsAppState createState() => _SettingsAppState();
+}
+
+class _SettingsAppState extends State<SettingsApp> {
+  bool _isDarkMode = false;
+
+  ThemeData get _currentTheme =>
+      _isDarkMode ? ThemeData.dark() : ThemeData.light();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: _currentTheme,
+      home: SettingsScreen(
+        isDarkMode: _isDarkMode,
+        onToggle: (value) {
+          setState(() {
+            _isDarkMode = value;
+          });
+        },
+      ),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  final bool isDarkMode;
+  final ValueChanged<bool> onToggle;
+
+  const SettingsScreen({
+    Key? key,
+    required this.isDarkMode,
+    required this.onToggle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: ListView(
+        children: [
+          SwitchListTile(
+            title: Text("Dark Mode"),
+            value: isDarkMode,
+            onChanged: onToggle,
+            secondary: Icon(Icons.dark_mode),
+          ),
+        ],
+      ),
+    );
+  }
+}
