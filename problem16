@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() {
+  runApp(MyAnimatedApp());
+}
+
+class MyAnimatedApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AnimatedContainerDemo(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class AnimatedContainerDemo extends StatefulWidget {
+  @override
+  _AnimatedContainerDemoState createState() => _AnimatedContainerDemoState();
+}
+
+class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
+  double _width = 100;
+  double _height = 100;
+  Color _color = Colors.blue;
+  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
+
+  void _changeProperties() {
+    final random = Random();
+
+    setState(() {
+      _width = random.nextDouble() * 200 + 50;
+      _height = random.nextDouble() * 200 + 50;
+      _color = Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      );
+      _borderRadius = BorderRadius.circular(random.nextDouble() * 100);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Animated Container')),
+      body: Center(
+        child: AnimatedContainer(
+          duration: Duration(seconds: 1),
+          width: _width,
+          height: _height,
+          decoration: BoxDecoration(
+            color: _color,
+            borderRadius: _borderRadius,
+          ),
+          curve: Curves.easeInOut,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _changeProperties,
+        child: Icon(Icons.play_arrow),
+      ),
+    );
+  }
+}
