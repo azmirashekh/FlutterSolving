@@ -1,0 +1,102 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyDrawerApp());
+}
+
+class MyDrawerApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CustomAnimatedDrawer(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class CustomAnimatedDrawer extends StatefulWidget {
+  @override
+  _CustomAnimatedDrawerState createState() => _CustomAnimatedDrawerState();
+}
+
+class _CustomAnimatedDrawerState extends State<CustomAnimatedDrawer> {
+  bool _isDrawerOpen = false;
+
+  void _toggleDrawer() {
+    setState(() {
+      _isDrawerOpen = !_isDrawerOpen;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Main Screen
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 300),
+            left: _isDrawerOpen ? 250 : 0,
+            top: 0,
+            right: _isDrawerOpen ? -250 : 0,
+            bottom: 0,
+            child: Material(
+              elevation: 8,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  AppBar(
+                    title: Text("Custom Drawer"),
+                    leading: IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: _toggleDrawer,
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text("Main Content"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Side Drawer
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 300),
+            top: 0,
+            bottom: 0,
+            left: _isDrawerOpen ? 0 : -250,
+            child: Container(
+              width: 250,
+              color: Colors.blue[700],
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text("Home", style: TextStyle(color: Colors.white)),
+                      leading: Icon(Icons.home, color: Colors.white),
+                    ),
+                    ListTile(
+                      title:
+                          Text("Settings", style: TextStyle(color: Colors.white)),
+                      leading: Icon(Icons.settings, color: Colors.white),
+                    ),
+                    Spacer(),
+                    ListTile(
+                      title:
+                          Text("Close", style: TextStyle(color: Colors.white)),
+                      leading: Icon(Icons.close, color: Colors.white),
+                      onTap: _toggleDrawer,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
